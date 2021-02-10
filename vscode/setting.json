@@ -1,0 +1,22 @@
+{
+  "window.zoomLevel": 0,
+  "files.insertFinalNewline": true,
+  "editor.tabSize": 2,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.renderWhitespace": "all",
+  "eslint.autoFixOnSave": true,
+  "prettier.eslintIntegration": true,
+  "prettier.jsxSingleQuote": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "files.exclude": {
+    "/node_modules": true,
+    "/node_modules/": true
+  },
+  "vsicons.dontShowNewVersionMessage": true,
+  "workbench.editor.enablePreview": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}
