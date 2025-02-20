@@ -1,55 +1,58 @@
-#
-# User configuration sourced by interactive shells
-#
+# PATH
+export PATH=/opt/homebrew/bin:$PATH
+export PATH=/opt/homebrew/opt/mysql@8.0/bin:$PATH
+export PATH=/opt/homebrew/opt/imagemagick@6/bin:$PATH
+export PATH=$(yarn global bin):$PATH
+#export PATH=/opt/homebrew/opt/openjdk/bin:$PATH
+export PATH=/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home/bin:$PATH
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home
+export PKG_CONFIG_PATH="/opt/homebrew/opt/zlib/lib/pkgconfig"
+# 一時的に追加
+export PATH=/opt/homebrew/opt/postgresql@10:$PATH
 
-# Source zim
-if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
-  source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
-fi
 
-# Environment variable configuration
-#export PATH=$HOME/.nodebrew/current/bin:/usr/local/bin/:$PATH
-export PATH=$HOME/.nodebrew/current/bin:/usr/local/bin/:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH
-export LANG=ja_JP.UTF-8
-export LC_CTYPE=ja_JP.UTF-8
-export EDITOR=vi
+# Editor
+export EDITOR=vim
+
 eval "$(direnv hook zsh)"
+# eval "$(anyenv init -)"
 
-# command correct edition before each completion attempt
-setopt correct
-
-# auto directory pushed that you can get dirs list by cd -[tab]
-setopt auto_pushd
-
-# Enable completion
-autoload -U compinit
-compinit
-
-# History configuration
-HISTSIZE=1000
-SAVEHIST=10000
-
-# Keybind
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
-eval "$(anyenv init -)"
-eval "$(direnv hook zsh)"
+setopt hist_ignore_dups
 
 # Alias
-alias t='tig'
-alias gb='git branch'
-alias gs='git stash'
-alias gsp='git stash pop'
-alias gpo='git push origin'
-alias gpfo='git push -f origin'
-alias ys='yarn start'
-alias vz='vim ~/.zshrc'
-alias bug='brew upgrade'
-alias vz='vim ~/.zshrc'
+
+## Brew
+alias b='brew'
+alias bug='b upgrade'
+
+## Git
+alias g='git'
+alias gb='g branch'
+alias gpl='g pull'
+alias gps='g push'
+alias gpsf='gps -f'
+alias gst='g stash'
+alias gstp='gst pop'
+alias gsw='g switch'
+alias gswc='gsw --create'
+alias gw='g wip'
+
+## Yarn
+alias yd='yarn dev'
+alias ycl='yarn clean'
+alias ycm='yarn commit'
+
+## Zsh
+alias cz='cat ~/.zshrc'
 alias sz='source ~/.zshrc'
-alias gmc='gitmoji -c'
-alias gs='git switch'
-alias gsc='gs -c'
+alias vz='vim ~/.zshrc'
+
+## Others
+alias t='tig'
+
+## Simulator
+alias ios-simulator="open $(xcode-select -p)/Applications/Simulator.app"
+alias android-simulator="~/Library/Android/sdk/emulator/emulator -avd $(~/Library/Android/sdk/emulator/emulator -list-avds | head)"
+
+# asdf
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
