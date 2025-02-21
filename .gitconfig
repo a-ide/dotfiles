@@ -1,5 +1,5 @@
 [user]
 	name = a-ide
 	email = ayano.ide@gmail.com
-[core]
-	excludesfile = /Users/a-ide/.gitignore_global
+[init]
+	defaultBranch = main
