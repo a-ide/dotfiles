@@ -3,3 +3,6 @@
 	email = ayano.ide@gmail.com
 [init]
 	defaultBranch = main
+[core]
+	editor = code --wait
+	excludesFile = ~/.config/git/gitignore
