@@ -1,0 +1,72 @@
+{
+  "files.insertFinalNewline": true,
+  "editor.tabSize": 2,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.renderWhitespace": "all",
+  "prettier.eslintIntegration": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "files.exclude": {
+    "/node_modules": true,
+    "/node_modules/": true
+  },
+  "vsicons.dontShowNewVersionMessage": true,
+  "workbench.editor.enablePreview": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.iconTheme": "vscode-icons",
+  "highlight-matching-tag.styles": {
+    "opening": {
+      "left": {
+        "underline": "yellow"
+      },
+      "right": {
+        "surround": "#155FFA"
+      },
+      "name": {
+        "highlight": "rgba(180, 20, 80, 0.3)"
+      }
+    },
+    "closing": {
+      "full": {
+        "custom": {
+          "dark": {
+            "borderWidth": "0 0 1px 0",
+            "borderColor": "white",
+            "borderStyle": "solid",
+            "borderRadius": "4px",
+            "right": "10px"
+          },
+          "light": {
+            "borderWidth": "0 0 1px 0",
+            "borderColor": "brown",
+            "borderStyle": "solid",
+            "borderRadius": "4px",
+            "right": "10px"
+          }
+        }
+      }
+    }
+  },
+  "security.workspace.trust.untrustedFiles": "open",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "[markdown]": {
+    "editor.defaultFormatter": null,
+    "editor.formatOnSave": true
+  },
+  "editor.guides.indentation": false,
+  "swaggerViewer.showOnlyFileName": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "editor.formatOnSave": true,
+  "githubPullRequests.pullBranch": "never",
+  "editor.wordWrap": "on",
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "prisma.showPrismaDataPlatformNotification": false,
+  "prettier.trailingComma": "all"
+}
