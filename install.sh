@@ -14,11 +14,14 @@ if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# # Homebrewでアプリインストール前に、fish でパスを設定しないとと思ったけど（dotfiles のインストール）、
-# # bash でやってるので bash のやり方でパスを通せば良さそう。
-
+# Homebrew (arm64) のパスを zsh に反映させる
 if [ "$ARCH_TYPE" = "arm64" ]; then
-  echo 'export PATH="/opt/homebrew/bin:$PATH"' >> ~/.bash_profile
+  echo "zsh に Homebrew のパスを追加します..."
+  if ! grep -q '/opt/homebrew/bin' "$HOME/.zprofile" 2>/dev/null; then
+    echo 'export PATH="/opt/homebrew/bin:$PATH"' >> "$HOME/.zprofile"
+  fi
+  # スクリプト中で即使えるように一時的にも追加
+  export PATH="/opt/homebrew/bin:$PATH"
 else
   echo "arm64 以外です。"
 fi
