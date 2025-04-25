@@ -14,10 +14,13 @@ if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# # Homebrewでアプリインストール前に、fish でパスを設定しないとと思ったけど（dotfiles のインストール）、
-# # bash でやってるので bash のやり方でパスを通せば良さそう。
-
+# Homebrew (arm64) のパスを zsh に反映させる
 if [ "$ARCH_TYPE" = "arm64" ]; then
+  echo "zsh に Homebrew のパスを追加します..."
+  if ! grep -q '/opt/homebrew/bin' "$HOME/.zprofile" 2>/dev/null; then
+    echo 'export PATH="/opt/homebrew/bin:$PATH"' >> "$HOME/.zprofile"
+  fi
+  # スクリプト中で即使えるように一時的にも追加
   export PATH="/opt/homebrew/bin:$PATH"
 else
   echo "arm64 以外です。"
@@ -29,15 +32,55 @@ fi
 brew bundle --file="$DOTFILES/Brewfile" --global
 
 ########################################
+# SSH鍵がなければ作成
+########################################
+# 新環境で git clone するなら
+# 1. SSH 鍵の作成
+# 2. 公開鍵をGithubに登録
+# 3. known_hosts に fingerprint を登録(流れで登録される)
+
+if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
+  echo "SSH鍵を作成します..."
+  ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ""
+fi
+
+# エージェントにこの鍵がまだ追加されていないなら追加
+if ! ssh-add -L 2>/dev/null | grep -q "$(cat "$HOME/.ssh/id_ed25519.pub")"; then
+  echo "SSHエージェントを起動し、鍵を追加します..."
+  eval "$(ssh-agent -s)"
+  ssh-add "$HOME/.ssh/id_ed25519"
+else
+  echo "SSH鍵はすでにエージェントに追加されています。"
+fi
+
+# 公開鍵案内を一度だけ表示（フラグファイルで制御）
+SSH_KEY_INFO_FLAG="$HOME/.ssh/.github_key_info_shown"
+
+if [ ! -f "$SSH_KEY_INFO_FLAG" ]; then
+  echo "以下の公開鍵を GitHub に登録してください:"
+  echo "----------------------------------------------"
+  cat "$HOME/.ssh/id_ed25519.pub"
+  echo "----------------------------------------------"
+  echo "https://github.com/settings/keys を開いて、上記の鍵を貼り付けてください。"
+  read -p "登録後に Enter を押してください..."
+
+  touch "$SSH_KEY_INFO_FLAG"
+else
+  echo "公開鍵の案内はスキップされました（前回表示済み）。"
+fi
+
+########################################
 # dotfiles リポジトリをクローン
 ########################################
 if [ ! -d "$DOTFILES" ]; then
-  echo "dotfiles リポジトリをインストールします....."
-  git clone https://github.com/a-ide/dotfiles.git
-else
-  echo "dotfilesは存在します。"
-fi
+  echo "dotfiles リポジトリをHTTPSでクローンします....."
+  git clone https://github.com/a-ide/dotfiles.git "$DOTFILES"
 
+  echo "SSH接続に切り替えます....."
+  git -C "$DOTFILES" remote set-url origin git@github.com:a-ide/dotfiles.git
+else
+  echo "dotfilesはすでに存在します。"
+fi
 
 mkdir -p "$HOME/.config"
 
