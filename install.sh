@@ -56,7 +56,7 @@ fi
 # Homebrew パッケージをインストール
 ########################################
 echo "📦 Brewfile からパッケージをインストールします..."
-run "brew bundle --file=\"$DOTFILES/Brewfile\" --global"
+run "brew bundle --file=\"$DOTFILES/Brewfile\""
 
 ########################################
 # .config ディレクトリの準備
