@@ -18,7 +18,7 @@ fi
 # # bash でやってるので bash のやり方でパスを通せば良さそう。
 
 if [ "$ARCH_TYPE" = "arm64" ]; then
-  export PATH="/opt/homebrew/bin:$PATH"
+  echo 'export PATH="/opt/homebrew/bin:$PATH"' >> ~/.bash_profile
 else
   echo "arm64 以外です。"
 fi
