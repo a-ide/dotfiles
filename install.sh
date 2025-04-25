@@ -41,17 +41,30 @@ if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
   ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ""
 fi
 
-# SSHエージェントを起動して鍵を追加
-eval "$(ssh-agent -s)"
-ssh-add "$HOME/.ssh/id_ed25519"
+# エージェントにこの鍵がまだ追加されていないなら追加
+if ! ssh-add -L 2>/dev/null | grep -q "$(cat "$HOME/.ssh/id_ed25519.pub")"; then
+  echo "SSHエージェントを起動し、鍵を追加します..."
+  eval "$(ssh-agent -s)"
+  ssh-add "$HOME/.ssh/id_ed25519"
+else
+  echo "SSH鍵はすでにエージェントに追加されています。"
+fi
 
-# GitHub に公開鍵を貼り付ける案内
-echo "以下の公開鍵を GitHub に登録してください:"
-echo "----------------------------------------------"
-cat "$HOME/.ssh/id_ed25519.pub"
-echo "----------------------------------------------"
-echo "https://github.com/settings/keys を開いて、上記の鍵を貼り付けてください。"
-read -p "登録後に Enter を押してください..."
+# 公開鍵案内を一度だけ表示（フラグファイルで制御）
+SSH_KEY_INFO_FLAG="$HOME/.ssh/.github_key_info_shown"
+
+if [ ! -f "$SSH_KEY_INFO_FLAG" ]; then
+  echo "以下の公開鍵を GitHub に登録してください:"
+  echo "----------------------------------------------"
+  cat "$HOME/.ssh/id_ed25519.pub"
+  echo "----------------------------------------------"
+  echo "https://github.com/settings/keys を開いて、上記の鍵を貼り付けてください。"
+  read -p "登録後に Enter を押してください..."
+
+  touch "$SSH_KEY_INFO_FLAG"
+else
+  echo "公開鍵の案内はスキップされました（前回表示済み）。"
+fi
 
 ########################################
 # dotfiles リポジトリをクローン
