@@ -23,7 +23,7 @@ run() {
 # Xcode Command Line Tools をインストール
 ########################################
 if ! xcode-select -p >/dev/null 2>&1; then
-  echo "� Xcode Command Line Tools をインストールします..."
+  echo "📦 Xcode Command Line Tools をインストールします..."
   xcode-select --install
   echo "⚠️ インストール完了後に再度スクリプトを実行してください。"
   exit 1
