@@ -2,8 +2,22 @@
 
 readonly ARCH_TYPE="$(arch)"
 readonly DOTFILES="$HOME/repositories/dotfiles"
+readonly LOG_FILE="$HOME/setup.log"
+INSTALL_SUCCESS=true
+
+# 標準出力とエラーをログに出力
+exec > >(tee -a "$LOG_FILE") 2>&1
 
 echo "🔧 セットアップを開始します....."
+
+run() {
+  echo "▶️ $1"
+  if ! eval "$1"; then
+    echo "❌ エラーが発生しました: $1"
+    INSTALL_SUCCESS=false
+    exit 1
+  fi
+}
 
 ########################################
 # Xcode Command Line Tools をインストール
@@ -15,33 +29,37 @@ if ! xcode-select -p >/dev/null 2>&1; then
   exit 1
 fi
 
-
 ########################################
 # Homebrew をインストール
 ########################################
-# # TODO: xcode-toolsのインストール有無をチェックするか後で調べる
 if ! command -v brew >/dev/null 2>&1; then
   echo "🍺 Homebrew をインストールします....."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+    echo "❌ Homebrew のインストールに失敗しました。"
+    INSTALL_SUCCESS=false
+    exit 1
+  }
 fi
 
 # Homebrew (arm64) のパスを zsh に反映させる
 if [ "$ARCH_TYPE" = "arm64" ]; then
   echo "🛤️ zsh に Homebrew のパスを追加します..."
-  if ! grep -q '/opt/homebrew/bin' "$HOME/.zprofile" 2>/dev/null; then
-    echo 'export PATH="/opt/homebrew/bin:$PATH"' >> "$HOME/.zprofile"
+
+  if ! grep -q 'eval "\$\(\/opt\/homebrew\/bin\/brew shellenv\)"' "$HOME/.zprofile" 2>/dev/null; then
+    echo >> "$HOME/.zprofile"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
   fi
-  # スクリプト中で即使えるように一時的にも追加
-  export PATH="/opt/homebrew/bin:$PATH"
+
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   echo "💻 arm64 以外です。"
 fi
 
 ########################################
-# Homebrew でパッケージ一覧からパッケージをまとめてインストール
+# Homebrew パッケージをインストール
 ########################################
 echo "📦 Brewfile からパッケージをインストールします..."
-brew bundle --file="$DOTFILES/Brewfile"
+run "brew bundle --file=\"$DOTFILES/Brewfile\""
 
 ########################################
 # .config ディレクトリの準備
@@ -53,32 +71,45 @@ mkdir -p "$HOME/.config"
 # シンボリックリンクを作成
 ########################################
 echo "🔗 シンボリックリンクを作成します..."
+mkdir -p "$HOME/.config/git"
+ln -sf "$DOTFILES/.config/git/config" "$HOME/.config/git/config" || echo "⚠️ git/config のシンボリックリンク作成に失敗しました。"
+ln -sf "$DOTFILES/.config/git/gitignore" "$HOME/.config/git/gitignore" || echo "⚠️ git/gitignore のシンボリックリンク作成に失敗しました。"
 
-# git settings
-mkdir -p "$HOME"/.config/git
-ln -sf "$DOTFILES"/.config/git "$HOME"/.config/git
-
-# VSCode settings
 mkdir -p "$HOME/Library/Application Support/Code/User"
-ln -sf "$DOTFILES"/vscode/settings.json "$HOME"/Library/Application Support/Code/User/settings.json
+ln -sf "$DOTFILES/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json" || echo "⚠️ VSCode のシンボリックリンク作成に失敗しました。"
 
-# fish settings
 mkdir -p "$HOME/.config/fish"
-ln -sf "$DOTFILES"/.config/fish "$HOME"/.config/fish
+find "$DOTFILES/.config/fish" -type f ! -name '.DS_Store' -print0 | while IFS= read -r -d '' file; do
+  rel_path="${file#$DOTFILES/.config/fish/}"
+  target="$HOME/.config/fish/$rel_path"
+  mkdir -p "$(dirname "$target")"
+  ln -sf "$file" "$target" || echo "⚠️ fish のシンボリックリンク作成に失敗しました。"
+done
+
 
 ########################################
-# fisher をインストール（まだなら）
+# fisher をインストール
 ########################################
 if ! command -v fisher >/dev/null 2>&1; then
   echo "🐟 fisher をインストールしています....."
-  curl -sL https://git.io/fisher | fish
-  fish -c "fisher install jorgebucaran/fisher"
+  curl -sL https://git.io/fisher | fish || echo "⚠️ fisher インストールに失敗しました。"
+  fish -c "fisher install jorgebucaran/fisher" || echo "⚠️ fisher プラグインインストールに失敗しました。"
 fi
 
 ########################################
 # fisher プラグインを更新
 ########################################
 echo "♻️ fisher をアップデートします....."
-fish -c "fisher update"
+fish -c "fisher update" || echo "⚠️ fisher アップデートに失敗しました。"
 
-echo "✅ セットアップ完了！"
+########################################
+# 結果の表示
+########################################
+if [ "$INSTALL_SUCCESS" = true ]; then
+  echo "✅ セットアップ完了！"
+  echo "🎉 開発環境の準備が完了しました！"
+else
+  echo "⚠️ セットアップ中にエラーが発生しました。"
+  echo "📄 ログファイル: $LOG_FILE を確認してください。"
+  exit 1
+fi
