@@ -36,7 +36,7 @@ fi
 ########################################
 # SSHエージェントに鍵を追加
 ########################################
-if ! ssh-add -L 2>/dev/null | grep -q "$(cat "$SSH_KEY_PUB")"; then
+if ! ls -al ~/.ssh; then
   echo "🧠 SSHエージェントを起動し、鍵を追加します..."
   eval "$(ssh-agent -s)"
   ssh-add "$SSH_KEY"
@@ -52,7 +52,6 @@ if [ ! -d "$DOTFILES" ]; then
   git clone https://github.com/a-ide/dotfiles.git "$DOTFILES"
 
   echo "🔄 リモートを SSH に切り替えます..."
-  git -C "$DOTFILES" remote set-url origin git@github.com:a-ide/dotfiles.git
 else
   echo "📁 dotfiles はすでに存在します。"
 fi
