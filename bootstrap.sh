@@ -48,10 +48,8 @@ fi
 # dotfiles リポジトリのクローン
 ########################################
 if [ ! -d "$DOTFILES" ]; then
-  echo "📥 dotfiles リポジトリを HTTPS 経由でクローンします..."
-  git clone https://github.com/a-ide/dotfiles.git "$DOTFILES"
-
-  echo "🔄 リモートを SSH に切り替えます..."
+  echo "📥 dotfiles リポジトリをクローンします..."
+  git clone git@github.com:a-ide/dotfiles.git "$DOTFILES"
 else
   echo "📁 dotfiles はすでに存在します。"
 fi
