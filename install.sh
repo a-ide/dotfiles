@@ -44,10 +44,13 @@ fi
 # Homebrew (arm64) のパスを zsh に反映させる
 if [ "$ARCH_TYPE" = "arm64" ]; then
   echo "🛤️ zsh に Homebrew のパスを追加します..."
-  if ! grep -q '/opt/homebrew/bin' "$HOME/.zprofile" 2>/dev/null; then
-    echo 'export PATH="/opt/homebrew/bin:$PATH"' >> "$HOME/.zprofile"
+
+  if ! grep -q 'eval "\$\(\/opt\/homebrew\/bin\/brew shellenv\)"' "$HOME/.zprofile" 2>/dev/null; then
+    echo >> "$HOME/.zprofile"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
   fi
-  export PATH="/opt/homebrew/bin:$PATH"
+
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   echo "💻 arm64 以外です。"
 fi
