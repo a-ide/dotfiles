@@ -36,7 +36,7 @@ fi
 ########################################
 # SSHエージェントに鍵を追加
 ########################################
-if ! ssh-add -L 2>/dev/null | grep -q "$(cat "$SSH_KEY_PUB")"; then
+if ! ls -al ~/.ssh; then
   echo "🧠 SSHエージェントを起動し、鍵を追加します..."
   eval "$(ssh-agent -s)"
   ssh-add "$SSH_KEY"
@@ -45,14 +45,34 @@ else
 fi
 
 ########################################
+# Xcode Command Line Tools をインストール
+########################################
+if ! xcode-select -p >/dev/null 2>&1; then
+  echo "🛠️ Xcode Command Line Tools をインストールします..."
+  xcode-select --install
+
+  echo "⚠️ インストールが完了したら、Enter を押してください。"
+  read
+
+  # 再チェック
+  if ! xcode-select -p >/dev/null 2>&1; then
+    echo "🛠️ Xcodeのアクティブなパスが設定されていないようです。設定を試みます..."
+    sudo xcode-select --switch /Library/Developer/CommandLineTools
+
+    # さらに再チェック
+    if ! xcode-select -p >/dev/null 2>&1; then
+      echo "❌ Xcode Command Line Tools のセットアップに失敗しました。手動で確認してください。"
+      exit 1
+    fi
+  fi
+fi
+
+########################################
 # dotfiles リポジトリのクローン
 ########################################
 if [ ! -d "$DOTFILES" ]; then
-  echo "📥 dotfiles リポジトリを HTTPS 経由でクローンします..."
-  git clone https://github.com/a-ide/dotfiles.git "$DOTFILES"
-
-  echo "🔄 リモートを SSH に切り替えます..."
-  git -C "$DOTFILES" remote set-url origin git@github.com:a-ide/dotfiles.git
+  echo "📥 dotfiles リポジトリをクローンします..."
+  git clone git@github.com:a-ide/dotfiles.git "$DOTFILES"
 else
   echo "📁 dotfiles はすでに存在します。"
 fi

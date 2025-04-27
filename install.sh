@@ -20,29 +20,6 @@ run() {
 }
 
 ########################################
-# Xcode Command Line Tools をインストール
-########################################
-if ! xcode-select -p >/dev/null 2>&1; then
-  echo "🛠️ Xcode Command Line Tools をインストールします..."
-  xcode-select --install
-
-  echo "⚠️ インストールが完了したら、Enter を押してください。"
-  read
-
-  # 再チェック
-  if ! xcode-select -p >/dev/null 2>&1; then
-    echo "🛠️ Xcodeのアクティブなパスが設定されていないようです。設定を試みます..."
-    sudo xcode-select --switch /Library/Developer/CommandLineTools
-
-    # さらに再チェック
-    if ! xcode-select -p >/dev/null 2>&1; then
-      echo "❌ Xcode Command Line Tools のセットアップに失敗しました。手動で確認してください。"
-      exit 1
-    fi
-  fi
-fi
-
-########################################
 # Homebrew をインストール
 ########################################
 if ! command -v brew >/dev/null 2>&1; then
