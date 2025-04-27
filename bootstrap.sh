@@ -81,4 +81,4 @@ fi
 # インストールスクリプトを実行
 ########################################
 echo "📦 セットアップスクリプトを実行します..."
-bash "$DOTFILES/install.sh"
+bash "$DOTFILES/scripts/install.sh"
