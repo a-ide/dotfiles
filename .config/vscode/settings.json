@@ -1,5 +1,4 @@
 {
-  "files.insertFinalNewline": true,
   "editor.tabSize": 2,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.renderWhitespace": "all",
@@ -68,5 +67,6 @@
     }
   ],
   "prisma.showPrismaDataPlatformNotification": false,
-  "prettier.trailingComma": "all"
+  "prettier.trailingComma": "all",
+  "files.insertFinalNewline": true
 }
