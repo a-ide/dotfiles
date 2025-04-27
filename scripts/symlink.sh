@@ -15,7 +15,7 @@ ln -sf "$DOTFILES/.config/git/config" "$HOME/.config/git/config" || echo "⚠️
 ln -sf "$DOTFILES/.config/git/gitignore" "$HOME/.config/git/gitignore" || echo "⚠️ git/gitignore のシンボリックリンク作成に失敗しました。"
 
 mkdir -p "$HOME/Library/Application Support/Code/User"
-ln -sf "$DOTFILES/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json" || echo "⚠️ VSCode のシンボリックリンク作成に失敗しました。"
+ln -sf "$DOTFILES/.config/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json" || echo "⚠️ VSCode のシンボリックリンク作成に失敗しました。"
 
 mkdir -p "$HOME/.config/fish"
 find "$DOTFILES/.config/fish" -type f ! -name '.DS_Store' -print0 | while IFS= read -r -d '' file; do
