@@ -1,8 +1,6 @@
 #!/bin/bash -eu
 
-readonly ARCH_TYPE="$(arch)"
-readonly DOTFILES="$HOME/repositories/dotfiles"
-readonly LOG_FILE="$HOME/setup.log"
+source "$(dirname "$0")/config.sh"
 INSTALL_SUCCESS=true
 
 # 標準出力とエラーをログに出力

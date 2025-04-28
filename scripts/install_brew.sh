@@ -1,8 +1,16 @@
 #!/bin/bash -eu
 
-readonly ARCH_TYPE="$(arch)"
-readonly DOTFILES="$HOME/repositories/dotfiles"
+source "$(dirname "$0")/config.sh"
 INSTALL_SUCCESS=true
+
+run() {
+  echo "▶️ $1"
+  if ! eval "$1"; then
+    echo "❌ エラーが発生しました: $1"
+    INSTALL_SUCCESS=false
+    exit 1
+  fi
+}
 
 ########################################
 # Homebrew をインストール

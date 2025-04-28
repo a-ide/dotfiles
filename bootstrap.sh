@@ -1,10 +1,6 @@
 #!/bin/bash -eu
 
-readonly DOTFILES="$HOME/repositories/dotfiles"
-readonly SSH_KEY="$HOME/.ssh/id_ed25519"
-readonly SSH_KEY_PUB="$SSH_KEY.pub"
-readonly SSH_KEY_INFO_FLAG="$HOME/.ssh/.github_key_info_shown"
-
+source "$(dirname "$0")/scripts/config.sh"
 echo "🚀 開発環境の準備を始めます..."
 
 ########################################
