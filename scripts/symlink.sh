@@ -1,4 +1,4 @@
-readonly DOTFILES="$HOME/repositories/dotfiles"
+source "$(dirname "$0")/config.sh"
 
 ########################################
 # .config ディレクトリの準備
