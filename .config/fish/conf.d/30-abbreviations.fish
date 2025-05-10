@@ -1,12 +1,13 @@
-# Git abbreviations
-abbr --add gb      "git branch"
-abbr --add gbd     "git branch -D"
-abbr --add gsw     "git switch"
-abbr --add gswc    "git switch -c"
-abbr --add gst     "git status"
-abbr --add gpl     "git pull"
-abbr --add gps     "git push"
+# === Git Abbreviations ===
+abbr -a gb   "git branch"
+abbr -a gbd  "git branch -D"
+abbr -a gsw  "git switch"
+abbr -a gswc "git switch -c"
+abbr -a gst  "git status"
+abbr -a gpl  "git pull"
+abbr -a gps  "git push"
 
+# === eza (ls alternative) Abbreviations ===
 abbr -a ll "eza -lAh"
 abbr -a lg "eza -lAh --git"
 abbr -a lt "eza -lAT"
