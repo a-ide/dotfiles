@@ -6,7 +6,6 @@ abbr --add gswc    "git switch -c"
 abbr --add gst     "git status"
 abbr --add gpl     "git pull"
 abbr --add gps     "git push"
-abbr --add gpsup   "gpsu"
 
 abbr -a ll "eza -lAh"
 abbr -a lg "eza -lAh --git"
