@@ -11,4 +11,3 @@ abbr --add gpsup   "gpsu"
 abbr -a ll "eza -lAh"
 abbr -a lg "eza -lAh --git"
 abbr -a lt "eza -lAT"
-
