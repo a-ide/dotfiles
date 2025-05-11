@@ -1,4 +1,19 @@
 function eza
+  if contains -- "--help" $argv
+    echo "▶ カスタム eza 関数の使い方"
+    echo ""
+    echo "  --perm       パーミッション情報を表示（--no-permissions を無効化）"
+    echo "  --no-ignore  .gitignore の内容を無視してすべてのファイルを表示"
+    echo "  --help       この使い方メッセージを表示"
+    echo ""
+    echo "🔸 例:"
+    echo "  eza -lah                     # デフォルト（パーミッション非表示・gitignore 適用）"
+    echo "  eza -lah --perm              # パーミッションを表示"
+    echo "  eza -lah --no-ignore         # .gitignore に無視されたファイルも表示"
+    echo "  eza -lah --perm --no-ignore  # すべて表示 + パーミッション付き"
+    return 0
+  end
+
   set show_perms 0
   set use_gitignore 1
   set args
