@@ -9,7 +9,7 @@ function gpsu
   end
 
   # 'origin' リモートが存在するかチェック
-  if not git remote get-url origin ^/dev/null
+  if not git remote get-url origin >/dev/null 2>/dev/null
     echo "❌ Error: No remote named 'origin' found."
     return 1
   end
