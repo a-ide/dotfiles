@@ -29,8 +29,6 @@ function eza
     end
   end
 
-  set cmd eza
-
   if test $show_perms -eq 0
     set args --no-permissions $args
   end
@@ -39,5 +37,5 @@ function eza
     set args --git-ignore $args
   end
 
-  command $cmd $args
+  command eza $args
 end
