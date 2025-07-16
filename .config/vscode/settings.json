@@ -13,7 +13,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "biomejs.biome",
   "workbench.iconTheme": "vscode-icons",
   "highlight-matching-tag.styles": {
     "opening": {
@@ -68,5 +68,10 @@
   ],
   "prisma.showPrismaDataPlatformNotification": false,
   "prettier.trailingComma": "all",
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "workbench.editorAssociations": {
+    "*.svg": "default"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "biome.suggestInstallingGlobally": false
 }
