@@ -70,8 +70,20 @@
   "prettier.trailingComma": "all",
   "files.insertFinalNewline": true,
   "workbench.editorAssociations": {
-    "*.svg": "default"
+    "*.svg": "default",
+    "git-rebase-todo": "default"
   },
   "diffEditor.ignoreTrimWhitespace": false,
-  "biome.suggestInstallingGlobally": false
+  "biome.suggestInstallingGlobally": false,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "git.confirmSync": false,
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  }
 }
